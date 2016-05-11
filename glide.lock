@@ -1,0 +1,6 @@
+hash: 50be4b0b3863c8e7dce2d93bc7a2d704b1a10383d710e0bd19e36a1ecac0ab1b
+updated: 2016-05-11T10:26:26.038505892+02:00
+imports:
+- name: github.com/kubernetes/helm
+  version: 6869258cfa24d2df045776618c367cd8334cf71e
+devImports: []
