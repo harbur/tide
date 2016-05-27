@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/howeyc/fsnotify"
 	"github.com/spf13/cobra"
 )
 
@@ -23,11 +24,58 @@ var applyCmd = &cobra.Command{
 }
 
 func runApply(cmd *cobra.Command, args []string) error {
-	log.SetOutput(ioutil.Discard)
-	setupInstallEnv(args)
-	manifest, _ := readManifest(installArg)
-	execute("apply", manifest)
+	setupApplyEnv(args)
+	if watch {
+		// log.SetOutput(ioutil.Discard)
+		manifest, _ := readManifest(installArg)
+		execute("apply", manifest)
+		watchForApply()
+	} else {
+		log.SetOutput(ioutil.Discard)
+		manifest, _ := readManifest(installArg)
+		execute("apply", manifest)
+	}
 	return nil
+}
+
+func watchForApply() {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	done := make(chan bool)
+
+	// Process events
+	go func() {
+		for {
+			select {
+			case ev := <-watcher.Event:
+				log.Println("event:", ev)
+				log.SetOutput(ioutil.Discard)
+				manifest, _ := readManifest(installArg)
+				execute("apply", manifest)
+			case err := <-watcher.Error:
+				log.Println("error:", err)
+			}
+		}
+	}()
+	log.Printf("dir %s", installArg)
+	err = watcher.Watch(installArg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = watcher.Watch(installArg + "/templates")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Hang so program doesn't exit
+	<-done
+
+	/* ... do stuff ... */
+	watcher.Close()
 }
 
 func setupApplyEnv(args []string) {
