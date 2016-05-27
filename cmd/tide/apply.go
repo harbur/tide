@@ -8,7 +8,7 @@ import (
 )
 
 const applyDesc = `
-This command applys a chart archive.
+This command applies a chart archive.
 
 The apply argument must be either a relative
 path to a chart directory or the name of a

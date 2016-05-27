@@ -29,12 +29,8 @@ func readManifest(installArg string) (string, error) {
 
 	overrides := map[string]interface{}{
 		"Release": map[string]interface{}{
-			"Name":      "name",
-			"Time":      "ts",
-			"Namespace": "s.env.Namespace",
-			"Service":   "Tide",
+			"Service": "Tide",
 		},
-		"Chart": "req.Chart.Metadata",
 	}
 
 	files, err := env.EngineYard.Default().Render(chpb, vals, overrides)
