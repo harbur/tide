@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // install flags & args
@@ -27,6 +29,11 @@ var RootCommand = &cobra.Command{
 	Use:   "tide",
 	Short: "The Kubernetes package renderer.",
 	Long:  globalUsage,
+}
+
+func fatalf(format string, args ...interface{}) {
+	fmt.Printf("fatal: %s\n", fmt.Sprintf(format, args...))
+	os.Exit(0)
 }
 
 func init() {

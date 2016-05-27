@@ -16,15 +16,15 @@ chart in the current working directory.
 `
 
 var uninstallCmd = &cobra.Command{
-	Use:   "uninstall [CHART]",
-	Short: "uninstall a chart archive.",
+	Use:   "down [CHART]",
+	Short: "Delete a chart archive from Kubernetes.",
 	Long:  uninstallDesc,
 	RunE:  runUninstall,
 }
 
 func runUninstall(cmd *cobra.Command, args []string) error {
 	log.SetOutput(ioutil.Discard)
-	setupInstallEnv(args)
+	setupUninstallEnv(args)
 	manifest, _ := readManifest(installArg)
 	execute("delete", manifest)
 	return nil

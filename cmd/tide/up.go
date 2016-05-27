@@ -17,8 +17,8 @@ chart in the current working directory.
 `
 
 var applyCmd = &cobra.Command{
-	Use:   "apply [CHART]",
-	Short: "apply a chart archive.",
+	Use:   "up [CHART]",
+	Short: "Apply a chart archive to Kubernetes.",
 	Long:  applyDesc,
 	RunE:  runApply,
 }

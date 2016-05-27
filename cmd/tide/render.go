@@ -17,15 +17,15 @@ chart in the current working directory.
 `
 
 var renderCmd = &cobra.Command{
-	Use:   "render [CHART]",
-	Short: "render a chart archive.",
+	Use:   "view [CHART]",
+	Short: "view a chart archive.",
 	Long:  renderDesc,
 	RunE:  runRender,
 }
 
 func runRender(cmd *cobra.Command, args []string) error {
 	log.SetOutput(ioutil.Discard)
-	setupInstallEnv(args)
+	setupRenderEnv(args)
 	manifest, _ := readManifest(installArg)
 	fmt.Printf("%s\n", manifest)
 	return nil
