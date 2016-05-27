@@ -1,5 +1,5 @@
-hash: 5125553049587eb73f548d9811a34a86b7f12095e7bd91daa8c5b8954d4b2414
-updated: 2016-05-26T09:46:41.722951323+02:00
+hash: 8908fafb3f66b25a835a21523f4d320be56eab3f359b2de4427e532e24116d8e
+updated: 2016-05-27T12:06:02.158686096+02:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c
@@ -146,10 +146,8 @@ imports:
   version: bbcb9da2d746f8bdbd6a936686a0a6067ada0ec5
 - name: github.com/gosuri/uitable
   version: 36ee7e946282a3fb1cfecd476ddc9b35d8847e42
-- name: github.com/harbur/tide
-  version: d9587a775c5fb57461b5b7a99f854fb55d462ad1
-  subpackages:
-  - cmd/tiller
+- name: github.com/howeyc/fsnotify
+  version: f0c08ee9c60704c1879025f2ae0ff3e000082c13
 - name: github.com/imdario/mergo
   version: 6633656539c1639d9d78127b7d47c622b5d7b6dc
 - name: github.com/inconshreveable/mousetrap
@@ -162,14 +160,12 @@ imports:
   - cmd/tiller/environment
   - pkg/chart
   - pkg/helm
-  - pkg/lint
-  - pkg/proto/hapi/services
-  - pkg/proto/hapi/release
-  - pkg/storage
-  - pkg/timeconv
   - pkg/engine
   - pkg/kube
   - pkg/proto/hapi/chart
+  - pkg/proto/hapi/release
+  - pkg/storage
+  - pkg/proto/hapi/services
 - name: github.com/Masterminds/semver
   version: 808ed7761c233af2de3f9729a041d68c62527f3a
 - name: github.com/Masterminds/sprig
@@ -403,6 +399,4 @@ imports:
   - pkg/storage
   - pkg/kubelet/qos
   - pkg/master/ports
-- name: speter.net/go/exp/math/dec/inf
-  version: ""
 devImports: []

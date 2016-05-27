@@ -17,14 +17,6 @@ path to a chart directory or the name of a
 chart in the current working directory.
 `
 
-// install flags & args
-var (
-	// installArg is the name or relative path of the chart to install
-	installArg string
-	// verbose enables verbose output
-	verbose bool
-)
-
 var installCmd = &cobra.Command{
 	Use:   "install [CHART]",
 	Short: "install a chart archive.",

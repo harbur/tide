@@ -36,10 +36,10 @@ func setupApplyEnv(args []string) {
 	} else {
 		fatalf("This command needs at least one argument, the name of the chart.")
 	}
-
 }
 
 func init() {
 	applyCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose apply")
+	applyCmd.Flags().BoolVarP(&watch, "watch", "w", false, "watch directory for changes")
 	RootCommand.AddCommand(applyCmd)
 }

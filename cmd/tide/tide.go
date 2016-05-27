@@ -4,8 +4,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// flagVerbose is a signal that the user wants additional output.
-var flagVerbose bool
+// install flags & args
+var (
+	// installArg is the name or relative path of the chart to install
+	installArg string
+	// verbose enables verbose output
+	verbose bool
+	// watch enables watch mode
+	watch bool
+)
 
 var globalUsage = `The Kubernetes package renderer
 
@@ -23,7 +30,7 @@ var RootCommand = &cobra.Command{
 }
 
 func init() {
-	RootCommand.PersistentFlags().BoolVarP(&flagVerbose, "verbose", "v", false, "enable verbose output")
+	RootCommand.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 }
 
 func main() {
