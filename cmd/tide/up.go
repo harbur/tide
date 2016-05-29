@@ -1,11 +1,12 @@
 package main
 
 import (
-	"io/ioutil"
-	"log"
-
 	"github.com/howeyc/fsnotify"
 	"github.com/spf13/cobra"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/signal"
 )
 
 const applyDesc = `
@@ -24,6 +25,10 @@ var applyCmd = &cobra.Command{
 }
 
 func runApply(cmd *cobra.Command, args []string) error {
+	if deletion && !watch {
+		fatalf("--delete can only be used in combination with --watch")
+		return nil
+	}
 	setupApplyEnv(args)
 	if watch {
 		// log.SetOutput(ioutil.Discard)
@@ -71,6 +76,20 @@ func watchForApply() {
 		log.Fatal(err)
 	}
 
+	// Exit on Ctrl-C
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, os.Interrupt)
+	go func() {
+		<-sigs
+
+		// Delete Chart if --delete flag is true
+		if deletion {
+			manifest, _ := readManifest(installArg)
+			execute("delete", manifest)
+		}
+		done <- true
+	}()
+
 	// Hang so program doesn't exit
 	<-done
 
@@ -89,5 +108,6 @@ func setupApplyEnv(args []string) {
 func init() {
 	applyCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose apply")
 	applyCmd.Flags().BoolVarP(&watch, "watch", "w", false, "watch directory for changes")
+	applyCmd.Flags().BoolVarP(&deletion, "delete", "d", false, "Automatically delete the chart when it exits")
 	RootCommand.AddCommand(applyCmd)
 }

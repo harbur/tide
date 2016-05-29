@@ -14,6 +14,8 @@ var (
 	verbose bool
 	// watch enables watch mode
 	watch bool
+	// delete enables automatic deletion on exit
+	deletion bool
 )
 
 var globalUsage = `The Kubernetes package renderer
