@@ -41,5 +41,6 @@ func setupRenderEnv(args []string) {
 
 func init() {
 	renderCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose render")
+	renderCmd.Flags().StringVarP(&manifest_file, "file", "f", "", "view manifest file")
 	RootCommand.AddCommand(renderCmd)
 }

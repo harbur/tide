@@ -11,8 +11,8 @@ import (
 
 var env = environment.New()
 
-func readManifest(installArg string) (string, error) {
-	chfi, err := chartutil.LoadChart(installArg)
+func readManifest(chart string) (string, error) {
+	chfi, err := chartutil.LoadChart(chart)
 	if err != nil {
 		return "", err
 	}
@@ -37,11 +37,13 @@ func readManifest(installArg string) (string, error) {
 
 	b := bytes.NewBuffer(nil)
 	for name, file := range files {
-		// Ignore empty documents because the Kubernetes library can't handle
-		// them.
-		if len(file) > 0 {
-			b.WriteString("\n---\n# Source: " + name + "\n")
-			b.WriteString(file)
+		if manifest_file == "" || manifest_file == name {
+			// Ignore empty documents because the Kubernetes library can't handle
+			// them.
+			if len(file) > 0 {
+				b.WriteString("\n---\n# Source: " + name + "\n")
+				b.WriteString(file)
+			}
 		}
 	}
 

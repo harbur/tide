@@ -16,6 +16,8 @@ var (
 	watch bool
 	// delete enables automatic deletion on exit
 	deletion bool
+	// manifest file
+	manifest_file string
 )
 
 var globalUsage = `The Kubernetes package renderer
