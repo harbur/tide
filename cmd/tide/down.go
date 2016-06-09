@@ -24,19 +24,16 @@ var uninstallCmd = &cobra.Command{
 
 func runUninstall(cmd *cobra.Command, args []string) error {
 	log.SetOutput(ioutil.Discard)
-	setupUninstallEnv(args)
-	manifest, _ := readManifest(installArg)
-	execute("delete", manifest)
-	return nil
-}
 
-func setupUninstallEnv(args []string) {
-	if len(args) > 0 {
-		installArg = args[0]
-	} else {
+	if len(args) == 0 {
 		fatalf("This command needs at least one argument, the name of the chart.")
 	}
 
+	for _, arg := range args {
+		manifest, _ := readManifest(arg)
+		execute("delete", manifest)
+	}
+	return nil
 }
 
 func init() {

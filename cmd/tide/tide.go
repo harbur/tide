@@ -8,8 +8,6 @@ import (
 
 // install flags & args
 var (
-	// installArg is the name or relative path of the chart to install
-	installArg string
 	// verbose enables verbose output
 	verbose bool
 	// watch enables watch mode

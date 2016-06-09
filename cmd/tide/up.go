@@ -27,23 +27,30 @@ var applyCmd = &cobra.Command{
 func runApply(cmd *cobra.Command, args []string) error {
 	if deletion && !watch {
 		fatalf("--delete can only be used in combination with --watch")
-		return nil
 	}
-	setupApplyEnv(args)
+
+	if len(args) == 0 {
+		fatalf("This command needs at least one argument, the name of the chart.")
+	}
+
 	if watch {
 		// log.SetOutput(ioutil.Discard)
-		manifest, _ := readManifest(installArg)
-		execute("apply", manifest)
-		watchForApply()
+		for _, arg := range args {
+			manifest, _ := readManifest(arg)
+			execute("apply", manifest)
+		}
+		watchForApply(args)
 	} else {
 		log.SetOutput(ioutil.Discard)
-		manifest, _ := readManifest(installArg)
-		execute("apply", manifest)
+		for _, arg := range args {
+			manifest, _ := readManifest(arg)
+			execute("apply", manifest)
+		}
 	}
 	return nil
 }
 
-func watchForApply() {
+func watchForApply(args []string) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -58,22 +65,27 @@ func watchForApply() {
 			case ev := <-watcher.Event:
 				log.Println("event:", ev)
 				log.SetOutput(ioutil.Discard)
-				manifest, _ := readManifest(installArg)
-				execute("apply", manifest)
+				for _, arg := range args {
+					manifest, _ := readManifest(arg)
+					execute("apply", manifest)
+				}
 			case err := <-watcher.Error:
 				log.Println("error:", err)
 			}
 		}
 	}()
-	log.Printf("dir %s", installArg)
-	err = watcher.Watch(installArg)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	err = watcher.Watch(installArg + "/templates")
-	if err != nil {
-		log.Fatal(err)
+	for _, arg := range args {
+		log.Printf("dir %s", arg)
+		err = watcher.Watch(arg)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = watcher.Watch(arg + "/templates")
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// Exit on Ctrl-C
@@ -84,8 +96,10 @@ func watchForApply() {
 
 		// Delete Chart if --delete flag is true
 		if deletion {
-			manifest, _ := readManifest(installArg)
-			execute("delete", manifest)
+			for _, arg := range args {
+				manifest, _ := readManifest(arg)
+				execute("delete", manifest)
+			}
 		}
 		done <- true
 	}()
@@ -95,14 +109,6 @@ func watchForApply() {
 
 	/* ... do stuff ... */
 	watcher.Close()
-}
-
-func setupApplyEnv(args []string) {
-	if len(args) > 0 {
-		installArg = args[0]
-	} else {
-		fatalf("This command needs at least one argument, the name of the chart.")
-	}
 }
 
 func init() {
