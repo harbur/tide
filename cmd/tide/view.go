@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/harbur/tide/cmd/tide"
 
 import (
 	"fmt"
@@ -31,6 +31,7 @@ func runView(cmd *cobra.Command, args []string) error {
 	log.SetOutput(ioutil.Discard)
 
 	for _, arg := range args {
+		debug("Viewing %s", arg)
 		manifest, _ := readManifest(arg)
 		fmt.Printf("%s\n", manifest)
 	}
@@ -41,5 +42,6 @@ func runView(cmd *cobra.Command, args []string) error {
 func init() {
 	viewCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose view")
 	viewCmd.Flags().StringVarP(&manifest_file, "file", "f", "", "view manifest file")
+	viewCmd.Flags().StringVarP(&profile, "profile", "p", "", "activate profile to read alternative values input")
 	RootCommand.AddCommand(viewCmd)
 }

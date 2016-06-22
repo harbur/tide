@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/harbur/tide/cmd/tide"
 
 import (
 	"github.com/howeyc/fsnotify"

@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/harbur/tide/cmd/tide"
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 func execute(command string, manifest string) {
 	cmd := exec.Command("kubectl", command, "-f", "-")
-
+	debug("hello there %s", manifest)
 	stdin, err := cmd.StdinPipe()
 
 	if err != nil {

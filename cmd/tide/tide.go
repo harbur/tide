@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/harbur/tide/cmd/tide"
 
 import (
 	"fmt"
@@ -16,6 +16,8 @@ var (
 	deletion bool
 	// manifest file
 	manifest_file string
+	// active profile
+	profile string
 )
 
 var globalUsage = `The Kubernetes package renderer
