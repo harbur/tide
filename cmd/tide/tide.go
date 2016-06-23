@@ -16,8 +16,8 @@ var (
 	deletion bool
 	// manifest file
 	manifest_file string
-	// active profile
-	profile string
+	// input file
+	input_file string
 )
 
 var globalUsage = `The Kubernetes package renderer

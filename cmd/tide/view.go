@@ -42,6 +42,6 @@ func runView(cmd *cobra.Command, args []string) error {
 func init() {
 	viewCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose view")
 	viewCmd.Flags().StringVarP(&manifest_file, "file", "f", "", "view manifest file")
-	viewCmd.Flags().StringVarP(&profile, "profile", "p", "", "activate profile to read alternative values input")
+	viewCmd.Flags().StringVarP(&input_file, "input", "i", "", "input file for variables")
 	RootCommand.AddCommand(viewCmd)
 }

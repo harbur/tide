@@ -5,29 +5,40 @@ import (
 
 	"k8s.io/helm/cmd/tiller/environment"
 	chartutil "k8s.io/helm/pkg/chartutil"
+	chart "k8s.io/helm/pkg/proto/hapi/chart"
 )
 
 var env = environment.New()
 
-func readManifest(chart string) (string, error) {
-	chrt, err := chartutil.Load(chart)
+func readManifest(chartname string) (string, error) {
+	chrt, err := chartutil.Load(chartname)
 	if err != nil {
 		print_error("Chart cannot be loaded: %", err)
 		return "", err
 	}
 
-	values_file := chart + "/values.yaml"
-	if len(profile) > 0 {
-		values_file = chart + "/values-" + profile + ".yaml"
-	}
-	vals, err := chartutil.ReadValuesFile(values_file)
-	debug("Values loaded %s", vals)
+	vals, err := chartutil.ReadValuesFile(chartname + "/values.yaml")
+	debug("Values loaded %v", vals)
 	if err != nil {
 		print_error("Values cannot be loaded: %s", err)
 		return "", err
 	}
 
-	files, err := env.EngineYard.Default().Render(chrt, vals)
+	overrides, err := chartutil.ReadValuesFile(input_file)
+	if err != nil {
+		print_error("Overrides cannot be loaded: %s", err)
+		return "", err
+	}
+
+	valsYAML, _ := vals.YAML()
+	valss := &chart.Config{Raw: valsYAML}
+	cfg, err := chartutil.CoalesceValues(chrt, valss, overrides.AsMap())
+	debug("Coalsce loaded %#v %v", cfg, cfg)
+	if err != nil {
+		return "", err
+	}
+
+	files, err := env.EngineYard.Default().Render(chrt, cfg)
 
 	b := bytes.NewBuffer(nil)
 	for name, file := range files {
