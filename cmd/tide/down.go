@@ -38,5 +38,6 @@ func runUninstall(cmd *cobra.Command, args []string) error {
 
 func init() {
 	uninstallCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose render")
+	uninstallCmd.Flags().StringVarP(&input_file, "input", "i", "", "input file for variables")
 	RootCommand.AddCommand(uninstallCmd)
 }

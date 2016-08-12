@@ -115,5 +115,6 @@ func init() {
 	applyCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose apply")
 	applyCmd.Flags().BoolVarP(&watch, "watch", "w", false, "watch directory for changes")
 	applyCmd.Flags().BoolVarP(&deletion, "delete", "d", false, "Automatically delete the chart when it exits")
+	applyCmd.Flags().StringVarP(&input_file, "input", "i", "", "input file for variables")
 	RootCommand.AddCommand(applyCmd)
 }
